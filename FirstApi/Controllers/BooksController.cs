@@ -1,10 +1,12 @@
-﻿using FirstApi.Models;
+﻿using FirstApi.DTO;
+using FirstApi.Models;
 using FirstApi.Services;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FirstApi.Controllers;
 
-[Route("api/[controller]")]
+[Route("[controller]")] //controller is going to listening to naything that comes to /<name of the controller>
 [ApiController]
 public class BooksController : Controller
 {
@@ -14,10 +16,59 @@ public class BooksController : Controller
     {
         this.booksService = booksService;
     }
-    // GET
+
     [HttpGet]
-    public IEnumerable<Book> Get()
+    public ActionResult<IEnumerable<Book>> Get()
     {
-        return booksService.GetBooks().Result;
+        var books = booksService.GetBooks().Result;
+        var enumerable = books as Book[] ?? books.ToArray();
+        if (!enumerable.Any())
+            return NotFound();
+        return Ok(enumerable);
+    }
+
+    [HttpPost]
+    public ActionResult<string> Post(BookRequestDto book)
+    {
+        try
+        {
+            return Ok(booksService.CreateBook(book.Title, book.Author, book.Type,book.Year).Result);
+        }
+        catch (Exception e)
+        {
+            return Problem(e.Message);
+        }
+    }
+
+    [HttpDelete("all")] //Will listen to /books/all
+    public ActionResult<int> DeleteAll()
+    {
+        throw new NotImplementedException();
+    }    
+    
+    [HttpDelete("{Id}")] //Will listen to /books/{id}
+    public ActionResult<bool> DeleteById()
+    {
+        throw new NotImplementedException();
+    }
+
+    [HttpPatch("{id}")]
+    public ActionResult PatchBook(string id, JsonPatchDocument<BookRequestDto> bookUpdates)
+    {
+        var book = booksService.GetBookById(id).Result;
+        if (book == null)
+            return NotFound();
+
+        var updatedBookDto = new BookRequestDto(book.Title, book.Author, book.Type, book.PublicationYear);
+        bookUpdates.ApplyTo(updatedBookDto);
+
+        book.Title = updatedBookDto.Title;
+        book.Author = updatedBookDto.Author;
+        book.Type = updatedBookDto.Type;
+        book.PublicationYear = updatedBookDto.Year;
+
+
+        return Ok(booksService.UpdateBook(id, book).Result);
+
     }
 }
