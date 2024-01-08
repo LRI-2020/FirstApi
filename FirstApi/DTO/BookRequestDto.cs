@@ -14,12 +14,12 @@ public class BookRequestDto
     public string Author { get; set; }
     public int Type { get; set; }
     [MinValue(1700)]
-    public int Year { get; set; }
+    public int PublicationYear { get; set; }
     public BookRequestDto(string title, string author, int? type, int? year)
     {
         Title = title;
         Author = author;
         Type = type??0;
-        Year = year ?? 1970;
+        PublicationYear = year ?? 1970;
     }
 }

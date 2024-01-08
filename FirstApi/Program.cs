@@ -18,16 +18,6 @@ builder.Services.AddControllers(config =>
     config.Filters.Add<ApiValidateModelAttribute>();
 });
 
-// builder.Services.Configure<ApiBehaviorOptions>(apiBehaviorOptions => apiBehaviorOptions.InvalidModelStateResponseFactory = actionContext =>
-// {
-//     return new BadRequestObjectResult(new
-//     {
-//         Code = 400,
-//         Messages = actionContext.ModelState.Values.SelectMany(x => x.Errors)
-//             .Select(x => x.ErrorMessage)
-//     });
-// });
-
 builder.Services.Configure<ApiBehaviorOptions>(opt =>
 {
     opt.SuppressModelStateInvalidFilter = true;
@@ -40,9 +30,10 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseExceptionHandler("/error");
-    //app.UseMiddleware<ExceptionHandlingMiddleware>();
 }
+app.UseExceptionHandler("/error");
+//app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 
 app.UseHttpsRedirection();
 

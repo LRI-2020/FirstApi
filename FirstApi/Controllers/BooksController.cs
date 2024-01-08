@@ -41,7 +41,7 @@ public class BooksController : Controller
     public ActionResult<string> Post(BookRequestDto bookInput)
     {
         var isValidType = Enum.IsDefined(typeof(DayOfWeek), bookInput.Type);
-        return Ok(booksService.CreateBook(bookInput.Title, bookInput.Author, isValidType ? (BookTypes)bookInput.Type : BookTypes.Unknown, bookInput.Year).Result);
+        return Ok(booksService.CreateBook(bookInput.Title, bookInput.Author, isValidType ? (BookTypes)bookInput.Type : BookTypes.Unknown, bookInput.PublicationYear).Result);
     }
 
     [HttpDelete("all")] //Will listen to /books/all
@@ -69,7 +69,7 @@ public class BooksController : Controller
         book.Title = updatedBookDto.Title;
         book.Author = updatedBookDto.Author;
         book.Type = isEnumIntParsed ? (BookTypes)updatedBookDto.Type : BookTypes.Unknown;
-        book.PublicationYear = updatedBookDto.Year;
+        book.PublicationYear = updatedBookDto.PublicationYear;
         return Ok(booksService.UpdateBook(id, book).Result);
     }
 }
