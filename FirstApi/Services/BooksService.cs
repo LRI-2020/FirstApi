@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Data;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using FirstApi.Models;
@@ -32,11 +33,12 @@ public class BooksService
             {
                 var rawBook = value.ToObject<RawBook>();
                 if (rawBook != null)
-                    books.Add(new Book(rawBook.Title, rawBook.Author, rawBook.Type, rawBook.Publication_year, name));
+                    books.Add(new Book(rawBook.Title, rawBook.Author, rawBook.Type, rawBook.PublicationYear, name));
             }
         }
 
-        return books;
+        throw new Exception("error occurred server side");
+        // return books;
     }
 
     public async Task<Book?> GetBookById(string id)
@@ -69,7 +71,7 @@ public class BooksService
     public async Task<Book> UpdateBook(string id, Book book)
     {
         if (id != book.Id)
-            throw new BadHttpRequestException("Id does not match with the book Id");
+            throw new Exception("Id does not match with the book Id");
         var rawBook = new RawBook(book.Title, book.Author, book.PublicationYear, book.Type);
         
         var body = JsonSerializer.Serialize(rawBook);
@@ -82,7 +84,7 @@ public class BooksService
         
         if(patchedBook==null)
             throw new Exception("book could not be patched");
-        return new Book(patchedBook.Title, patchedBook.Author, patchedBook.Type, patchedBook.Publication_year, id);
+        return new Book(patchedBook.Title, patchedBook.Author, patchedBook.Type, patchedBook.PublicationYear, id);
 
 
     }

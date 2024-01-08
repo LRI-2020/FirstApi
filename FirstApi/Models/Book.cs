@@ -26,12 +26,12 @@ public class RawBook
     {
         Title = title;
         Author = author;
-        Publication_year = publicationYear;
+        PublicationYear = publicationYear;
         Type = type;
     }
 
     public string Title { get; set; }
     public string Author { get; set; }
-    public int Publication_year { get; set; }
+    public int PublicationYear { get; set; }
     public string Type { get; set; }
 }

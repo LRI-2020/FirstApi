@@ -67,7 +67,6 @@ public class BooksController : Controller
         book.Type = updatedBookDto.Type;
         book.PublicationYear = updatedBookDto.Year;
 
-
         return Ok(booksService.UpdateBook(id, book).Result);
 
     }
