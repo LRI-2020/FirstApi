@@ -4,19 +4,19 @@ namespace FirstApi.ValidationAttributes;
 
 public class MinValueAttribute : ValidationAttribute
 {
-    private readonly int value;
+    private readonly int minValue;
 
-    public MinValueAttribute(int value)
+    public MinValueAttribute(int minValue)
     {
-        this.value = value;
+        this.minValue = minValue;
     }
 
     protected override ValidationResult IsValid(object value, ValidationContext validationContext)
     {
-        Double input = (Double)validationContext.ObjectInstance;
+        Double input = Convert.ToDouble(value);
 
-        if (!(input < this.value)) return ValidationResult.Success;
-        var error = $"{input} should be >= {this.value}";
+        if (!(input < this.minValue)) return ValidationResult.Success;
+        var error = $"{input} should be >= {minValue}";
         return new ValidationResult(error);
 
     }
