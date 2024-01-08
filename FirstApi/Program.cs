@@ -1,4 +1,5 @@
 using FirstApi.Services;
+using FirstApi.ValidationAttributes;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,14 +13,24 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddScoped<HttpClient>();        
 builder.Services.AddScoped<BooksService>();
-builder.Services.Configure<ApiBehaviorOptions>(apiBehaviorOptions => apiBehaviorOptions.InvalidModelStateResponseFactory = actionContext =>
+builder.Services.AddControllers(config =>
 {
-    return new BadRequestObjectResult(new
-    {
-        Code = 400,
-        Messages = actionContext.ModelState.Values.SelectMany(x => x.Errors)
-            .Select(x => x.ErrorMessage)
-    });
+    config.Filters.Add<ApiValidateModelAttribute>();
+});
+
+// builder.Services.Configure<ApiBehaviorOptions>(apiBehaviorOptions => apiBehaviorOptions.InvalidModelStateResponseFactory = actionContext =>
+// {
+//     return new BadRequestObjectResult(new
+//     {
+//         Code = 400,
+//         Messages = actionContext.ModelState.Values.SelectMany(x => x.Errors)
+//             .Select(x => x.ErrorMessage)
+//     });
+// });
+
+builder.Services.Configure<ApiBehaviorOptions>(opt =>
+{
+    opt.SuppressModelStateInvalidFilter = true;
 });
 
 var app = builder.Build();
