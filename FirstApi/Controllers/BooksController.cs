@@ -25,20 +25,23 @@ public class BooksController : Controller
         if (!enumerable.Any())
             return NotFound();
         return Ok(enumerable);
+    }    
+    [Route("/book/{id}")]
+    [HttpGet]
+    public ActionResult<IEnumerable<Book>> GetById(string id)
+    {
+        var book = booksService.GetBookById(id).Result;
+        if (book==null) 
+            return NotFound(new ProblemDetails(){Title = $"Book with Id {id} not found"});
+        return Ok(book);
     }
 
     [HttpPost]
     public ActionResult<string> Post(BookRequestDto book)
     {
-        try
-        {
+        
             return Ok(booksService.CreateBook(book.Title, book.Author, book.Type,book.Year).Result);
         }
-        catch (Exception e)
-        {
-            return Problem(e.Message);
-        }
-    }
 
     [HttpDelete("all")] //Will listen to /books/all
     public ActionResult<int> DeleteAll()

@@ -37,8 +37,8 @@ public class BooksService
             }
         }
 
-        throw new Exception("error occurred server side");
-        // return books;
+        //throw new Exception("error occurred server side");
+         return books;
     }
 
     public async Task<Book?> GetBookById(string id)
