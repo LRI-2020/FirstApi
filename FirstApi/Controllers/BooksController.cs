@@ -25,30 +25,31 @@ public class BooksController : Controller
         if (!enumerable.Any())
             return NotFound();
         return Ok(enumerable);
-    }    
+    }
+
     [Route("/book/{id}")]
     [HttpGet]
     public ActionResult<IEnumerable<Book>> GetById(string id)
     {
         var book = booksService.GetBookById(id).Result;
-        if (book==null) 
-            return NotFound(new ProblemDetails(){Title = $"Book with Id {id} not found"});
+        if (book == null)
+            return NotFound(new ProblemDetails() { Title = $"Book with Id {id} not found" });
         return Ok(book);
     }
 
     [HttpPost]
-    public ActionResult<string> Post(BookRequestDto book)
+    public ActionResult<string> Post(BookRequestDto bookInput)
     {
-        
-            return Ok(booksService.CreateBook(book.Title, book.Author, book.Type,book.Year).Result);
-        }
+        var isValidType = Enum.IsDefined(typeof(DayOfWeek), bookInput.Type);
+        return Ok(booksService.CreateBook(bookInput.Title, bookInput.Author, isValidType ? (BookTypes)bookInput.Type : BookTypes.Unknown, bookInput.Year).Result);
+    }
 
     [HttpDelete("all")] //Will listen to /books/all
     public ActionResult<int> DeleteAll()
     {
         throw new NotImplementedException();
-    }    
-    
+    }
+
     [HttpDelete("{Id}")] //Will listen to /books/{id}
     public ActionResult<bool> DeleteById()
     {
@@ -62,15 +63,13 @@ public class BooksController : Controller
         if (book == null)
             return NotFound();
 
-        var updatedBookDto = new BookRequestDto(book.Title, book.Author, book.Type, book.PublicationYear);
+        var updatedBookDto = new BookRequestDto(book.Title, book.Author, (int)book.Type, book.PublicationYear);
         bookUpdates.ApplyTo(updatedBookDto);
-
+        var isEnumIntParsed = Enum.IsDefined(typeof(DayOfWeek), updatedBookDto.Type);
         book.Title = updatedBookDto.Title;
         book.Author = updatedBookDto.Author;
-        book.Type = updatedBookDto.Type;
+        book.Type = isEnumIntParsed ? (BookTypes)updatedBookDto.Type : BookTypes.Unknown;
         book.PublicationYear = updatedBookDto.Year;
-
         return Ok(booksService.UpdateBook(id, book).Result);
-
     }
 }

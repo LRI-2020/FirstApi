@@ -33,7 +33,12 @@ public class BooksService
             {
                 var rawBook = value.ToObject<RawBook>();
                 if (rawBook != null)
-                    books.Add(new Book(rawBook.Title, rawBook.Author, rawBook.Type, rawBook.PublicationYear, name));
+                {
+                    var currentBookType = Enum.IsDefined(typeof(BookTypes), rawBook.Type);
+                    books.Add(new Book(rawBook.Title, rawBook.Author, 
+                        currentBookType ? Enum.Parse<BookTypes>(rawBook.Type, true): BookTypes.Unknown, 
+                        rawBook.PublicationYear, name));
+                }
             }
         }
 
@@ -57,9 +62,9 @@ public class BooksService
 
     }
 
-    public async Task<string> CreateBook(string title, string author, string type, int publicationYear)
+    public async Task<string> CreateBook(string title, string author, BookTypes type, int publicationYear)
     {
-        var rawBook = new RawBook(title, author, publicationYear, type);
+        var rawBook = new RawBook(title, author, publicationYear, type.ToString());
         var body = JsonSerializer.Serialize(rawBook);
         var requestContent = new StringContent(body, Encoding.UTF8, "application/json");
         using HttpResponseMessage res = await httpClient.PostAsync(ApiUrl+".json", requestContent);
@@ -72,7 +77,7 @@ public class BooksService
     {
         if (id != book.Id)
             throw new Exception("Id does not match with the book Id");
-        var rawBook = new RawBook(book.Title, book.Author, book.PublicationYear, book.Type);
+        var rawBook = new RawBook(book.Title, book.Author, book.PublicationYear, book.Type.ToString());
         
         var body = JsonSerializer.Serialize(rawBook);
         var requestContent = new StringContent(body, Encoding.UTF8, "application/json");
@@ -82,9 +87,9 @@ public class BooksService
         var result = JObject.Parse(await res.Content.ReadAsStringAsync());
         var patchedBook = result.ToObject<RawBook>();
         
-        if(patchedBook==null)
+        if(patchedBook==null || !BookConverter.IsBook(patchedBook))
             throw new Exception("book could not be patched");
-        return new Book(patchedBook.Title, patchedBook.Author, patchedBook.Type, patchedBook.PublicationYear, id);
+        return new Book(patchedBook.Title, patchedBook.Author, (BookTypes)Enum.Parse(typeof(BookTypes),patchedBook.Type, true), patchedBook.PublicationYear, id);
 
 
     }
