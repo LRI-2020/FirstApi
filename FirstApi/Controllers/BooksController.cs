@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FirstApi.Controllers;
 
-[Route("[controller]")] //controller is going to listening to naything that comes to /<name of the controller>
+[Route("/books")]
 [ApiController]
 public class BooksController : Controller
 {
@@ -35,8 +35,9 @@ public class BooksController : Controller
         if (book == null)
             return NotFound(new ProblemDetails() { Title = $"Book with Id {id} not found" });
         return Ok(book);
-    }
-
+    } 
+    
+    [Route("/book")]
     [HttpPost]
     public ActionResult<string> Post(BookRequestDto bookInput)
     {
@@ -49,14 +50,16 @@ public class BooksController : Controller
     {
         return Ok(booksService.DeleteAll().Result);
     }
-
-    [HttpDelete("{id}")] //Will listen to /books/{id}
+    
+    [Route("/book/{id}")]
+    [HttpDelete] //Will listen to /books/{id}
     public ActionResult<bool> DeleteById(string id)
     {
         return Ok(booksService.DeleteById(id).Result);
     }
 
-    [HttpPatch("{id}")]
+    [Route("/book/{id}")]
+    [HttpPatch]
     public ActionResult PatchBook(string id, JsonPatchDocument<BookRequestDto> bookUpdates)
     {
         var book = booksService.GetBookById(id).Result;
