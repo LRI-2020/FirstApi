@@ -65,6 +65,10 @@ public class BooksController : Controller
 
         var updatedBookDto = new BookRequestDto(book.Title, book.Author, (int)book.Type, book.PublicationYear);
         bookUpdates.ApplyTo(updatedBookDto);
+        if (!ModelState.IsValid || !TryValidateModel(updatedBookDto))
+        {
+            return BadRequest(ModelState);
+        }
         var isEnumIntParsed = Enum.IsDefined(typeof(DayOfWeek), updatedBookDto.Type);
         book.Title = updatedBookDto.Title;
         book.Author = updatedBookDto.Author;
@@ -72,4 +76,5 @@ public class BooksController : Controller
         book.PublicationYear = updatedBookDto.PublicationYear;
         return Ok(booksService.UpdateBook(id, book).Result);
     }
+    
 }
