@@ -50,10 +50,10 @@ public class BooksController : Controller
         return Ok(booksService.DeleteAll().Result);
     }
 
-    [HttpDelete("{Id}")] //Will listen to /books/{id}
-    public ActionResult<bool> DeleteById()
+    [HttpDelete("{id}")] //Will listen to /books/{id}
+    public ActionResult<bool> DeleteById(string id)
     {
-        throw new NotImplementedException();
+        return Ok(booksService.DeleteById(id).Result);
     }
 
     [HttpPatch("{id}")]

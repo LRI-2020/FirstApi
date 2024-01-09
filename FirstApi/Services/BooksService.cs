@@ -20,7 +20,7 @@ public class BooksService
 
     public async Task<IEnumerable<Book>> GetBooks()
     {
-        using HttpResponseMessage res = await httpClient.GetAsync(ApiUrl+".json");
+        using HttpResponseMessage res = await httpClient.GetAsync(ApiUrl + ".json");
         var jsonResponse = await res.Content.ReadAsStringAsync();
         JObject rawBooks = JObject.Parse(jsonResponse);
 
@@ -35,12 +35,13 @@ public class BooksService
                 if (rawBook != null)
                 {
                     var currentBookType = Enum.IsDefined(typeof(BookTypes), rawBook.Type);
-                    books.Add(new Book(rawBook.Title, rawBook.Author, 
-                        currentBookType ? Enum.Parse<BookTypes>(rawBook.Type, true): BookTypes.Unknown, 
+                    books.Add(new Book(rawBook.Title, rawBook.Author,
+                        currentBookType ? Enum.Parse<BookTypes>(rawBook.Type, true) : BookTypes.Unknown,
                         rawBook.PublicationYear, name));
                 }
             }
         }
+
         return books;
     }
 
@@ -55,9 +56,8 @@ public class BooksService
         catch (Exception e)
         {
             Console.WriteLine(e);
-                return null;
+            return null;
         }
-
     }
 
     public async Task<string> CreateBook(string title, string author, BookTypes type, int publicationYear)
@@ -65,7 +65,7 @@ public class BooksService
         var rawBook = new RawBook(title, author, publicationYear, type.ToString());
         var body = JsonSerializer.Serialize(rawBook);
         var requestContent = new StringContent(body, Encoding.UTF8, "application/json");
-        using HttpResponseMessage res = await httpClient.PostAsync(ApiUrl+".json", requestContent);
+        using HttpResponseMessage res = await httpClient.PostAsync(ApiUrl + ".json", requestContent);
         if (!res.IsSuccessStatusCode) throw new Exception("Book not created");
 
         return GetJsonBodyResponse(res).Result["name"]!.ToString();
@@ -76,20 +76,18 @@ public class BooksService
         if (id != book.Id)
             throw new Exception("Id does not match with the book Id");
         var rawBook = new RawBook(book.Title, book.Author, book.PublicationYear, book.Type.ToString());
-        
+
         var body = JsonSerializer.Serialize(rawBook);
         var requestContent = new StringContent(body, Encoding.UTF8, "application/json");
-        using HttpResponseMessage res = await httpClient.PatchAsync(ApiUrl + "/" + book.Id+".json", requestContent);
-        if (!res.IsSuccessStatusCode) throw new Exception("book could not be patched"); 
+        using HttpResponseMessage res = await httpClient.PatchAsync(ApiUrl + "/" + book.Id + ".json", requestContent);
+        if (!res.IsSuccessStatusCode) throw new Exception("book could not be patched");
 
         var result = JObject.Parse(await res.Content.ReadAsStringAsync());
         var patchedBook = result.ToObject<RawBook>();
-        
-        if(patchedBook==null || !BookConverter.IsBook(patchedBook))
+
+        if (patchedBook == null || !BookConverter.IsBook(patchedBook))
             throw new Exception("book could not be patched");
-        return new Book(patchedBook.Title, patchedBook.Author, (BookTypes)Enum.Parse(typeof(BookTypes),patchedBook.Type, true), patchedBook.PublicationYear, id);
-
-
+        return new Book(patchedBook.Title, patchedBook.Author, (BookTypes)Enum.Parse(typeof(BookTypes), patchedBook.Type, true), patchedBook.PublicationYear, id);
     }
 
     private async Task<JObject> GetJsonBodyResponse(HttpResponseMessage res)
@@ -101,12 +99,22 @@ public class BooksService
 
     public async Task<int> DeleteAll()
     {
-
         var booksCount = GetBooks().Result.Count();
-        using HttpResponseMessage res = await httpClient.DeleteAsync(ApiUrl +".json");
+        using HttpResponseMessage res = await httpClient.DeleteAsync(ApiUrl + ".json");
         if (res.IsSuccessStatusCode)
             return booksCount;
 
         throw new Exception("Error occurred when deleting the books - " + res.StatusCode);
+    }
+
+    public async Task<bool> DeleteById(string id)
+    {
+        if (await GetBookById(id) == null)
+            throw new KeyNotFoundException($"Book with Id {id} does not exist");
+
+        using HttpResponseMessage res = await httpClient.DeleteAsync(ApiUrl + $"/{id}.json");
+        if (res.IsSuccessStatusCode)
+            return true;
+        return false;
     }
 }

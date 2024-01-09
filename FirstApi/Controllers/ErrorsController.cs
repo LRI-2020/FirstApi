@@ -10,25 +10,33 @@ public class ErrorsController : Controller
     public IActionResult Error()
     {
         var context = HttpContext.Features.Get<IExceptionHandlerFeature>();
- 
         var exception = context?.Error;
+        var problemDetails = SpecificProblem(exception);
+        return StatusCode(problemDetails.Status ?? StatusCodes.Status500InternalServerError, problemDetails);
+    }
 
-        var problemDetails =  new ProblemDetails
+    private ProblemDetails SpecificProblem(Exception? exception)
+    {
+        exception = exception is AggregateException ? exception.GetBaseException() : exception;
+
+        var problemDetails = new ProblemDetails
         {
             Status = StatusCodes.Status500InternalServerError,
-            Detail = exception!=null? exception.Message : "an error occurred while processing your request",
-            Title="Server Error"
+            Detail = exception != null ? exception.Message : "An error occurred",
+            Title = "Server Error"
         };
-        
-        if (exception is UnauthorizedAccessException)
+        switch (exception)
         {
-            problemDetails.Status = StatusCodes.Status401Unauthorized;
-            problemDetails.Title = "Unauthorized access";
+            case UnauthorizedAccessException:
+                problemDetails.Status = StatusCodes.Status401Unauthorized;
+                problemDetails.Title = "Unauthorized access";
+                break;
+            case KeyNotFoundException:
+                problemDetails.Status = StatusCodes.Status404NotFound;
+                problemDetails.Title = "Not found";
+                break;
         }
 
-        // Add additional cases for other exception types as needed
-
-        return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
+        return problemDetails;
     }
-    
 }
