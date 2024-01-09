@@ -16,7 +16,8 @@ public class ErrorsController : Controller
         var problemDetails =  new ProblemDetails
         {
             Status = StatusCodes.Status500InternalServerError,
-            Title = exception!=null? exception.Message:"Server Error"
+            Detail = exception!=null? exception.Message : "an error occurred while processing your request",
+            Title="Server Error"
         };
         
         if (exception is UnauthorizedAccessException)

@@ -41,9 +41,7 @@ public class BooksService
                 }
             }
         }
-
-        //throw new Exception("error occurred server side");
-         return books;
+        return books;
     }
 
     public async Task<Book?> GetBookById(string id)
@@ -99,5 +97,16 @@ public class BooksService
         var jsonResponse = await res.Content.ReadAsStringAsync();
         JObject result = JObject.Parse(jsonResponse);
         return result;
+    }
+
+    public async Task<int> DeleteAll()
+    {
+
+        var booksCount = GetBooks().Result.Count();
+        using HttpResponseMessage res = await httpClient.DeleteAsync(ApiUrl +".json");
+        if (res.IsSuccessStatusCode)
+            return booksCount;
+
+        throw new Exception("Error occurred when deleting the books - " + res.StatusCode);
     }
 }

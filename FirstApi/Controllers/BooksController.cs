@@ -47,7 +47,7 @@ public class BooksController : Controller
     [HttpDelete("all")] //Will listen to /books/all
     public ActionResult<int> DeleteAll()
     {
-        throw new NotImplementedException();
+        return Ok(booksService.DeleteAll().Result);
     }
 
     [HttpDelete("{Id}")] //Will listen to /books/{id}
