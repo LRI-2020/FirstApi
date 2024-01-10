@@ -4,12 +4,12 @@ namespace FirstApi.Models;
 
 public class Book
 {
-    public Book(string title, string author, BookTypes type, int publicationYear, string id)
+    public Book(string title, string author, BookTypes? type, int? publicationYear, string id)
     {
         Title = title;
         Author = author;
-        Type = type;
-        PublicationYear = publicationYear;
+        Type = type?? BookTypes.Unknown;
+        PublicationYear = publicationYear??1970;
         Id = id;
     }
 
@@ -22,9 +22,9 @@ public class Book
 
 public static class BookConverter
 {
-    public static bool IsBook(RawBook rawBook)
+    public static bool IsBook(FireBaseBook fireBaseBook)
     {
-        return Enum.IsDefined(typeof(BookTypes), rawBook.Type);
+        return Enum.IsDefined(typeof(BookTypes), fireBaseBook.Type);
     }
 
 }
@@ -32,9 +32,9 @@ public static class BookConverter
 
 
 
-public class RawBook
+public class FireBaseBook
 {
-    public RawBook(string title, string author, int publicationYear, string type)
+    public FireBaseBook(string title, string author, int publicationYear, string type)
     {
         Title = title;
         Author = author;

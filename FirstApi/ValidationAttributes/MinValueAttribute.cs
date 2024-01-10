@@ -11,15 +11,13 @@ public class MinValueAttribute : ValidationAttribute
         this.minValue = minValue;
     }
 
-    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+    protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
     {
+        if (value == null) return ValidationResult.Success;
         Double input = Convert.ToDouble(value);
 
-        if (!(input < this.minValue)) return ValidationResult.Success;
+        if (!(input < minValue)) return ValidationResult.Success;
         var error = $"{input} should be >= {minValue}";
         return new ValidationResult(error);
-
     }
-
-    
 }
