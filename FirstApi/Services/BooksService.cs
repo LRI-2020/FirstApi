@@ -90,7 +90,6 @@ public class BooksService
         if(updatedFirebaseBook==null || !BookConverter.IsBook(updatedFirebaseBook))
             throw new Exception("book could not be updated");
         return new Book(updatedFirebaseBook.Title, updatedFirebaseBook.Author, (BookTypes)Enum.Parse(typeof(BookTypes),updatedFirebaseBook.Type, true), updatedFirebaseBook.PublicationYear, id);
-
     }
 
     private async Task<JObject> GetJsonBodyResponse(HttpResponseMessage res)

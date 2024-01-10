@@ -1,6 +1,9 @@
 ﻿using FirstApi.DTO;
 using FirstApi.Models;
 using FirstApi.Services;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,10 +14,12 @@ namespace FirstApi.Controllers;
 public class BooksController : Controller
 {
     private readonly BooksService booksService;
+    private readonly IValidator<BookDto> validator;
 
-    public BooksController(BooksService booksService)
+    public BooksController(BooksService booksService,   IValidator<BookDto> validator)
     {
         this.booksService = booksService;
+        this.validator = validator;
     }
 
     [HttpGet]

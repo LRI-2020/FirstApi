@@ -29,9 +29,6 @@ public static class BookConverter
 
 }
 
-
-
-
 public class FireBaseBook
 {
     public FireBaseBook(string title, string author, int publicationYear, string type)

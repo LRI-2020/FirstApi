@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using FirstApi.Models;
 using FirstApi.ValidationAttributes;
+using FluentValidation;
 
 namespace FirstApi.DTO;
 
@@ -17,5 +18,13 @@ public class BookDto
         Author = author;
         Type = type;
         PublicationYear = year;
+    }
+}
+
+public class BookDtpValidator : AbstractValidator<BookDto>
+{
+    public BookDtpValidator()
+    {
+        
     }
 }
