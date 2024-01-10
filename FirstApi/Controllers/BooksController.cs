@@ -22,6 +22,10 @@ public class BooksController : Controller
         this.validator = validator;
     }
 
+    /// <summary>
+    /// Return all the books
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     public ActionResult<IEnumerable<Book>> GetAll()
     {
@@ -32,6 +36,11 @@ public class BooksController : Controller
         return Ok(enumerable);
     }
 
+    /// <summary>
+    /// Return a book based on its id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [Route("/book/{id}")]
     [HttpGet]
     public ActionResult<IEnumerable<Book>> GetById(string id)
@@ -42,6 +51,11 @@ public class BooksController : Controller
         return Ok(book);
     }
 
+    /// <summary>
+    /// Create a new book
+    /// </summary>
+    /// <param name="bookInput"></param>
+    /// <returns></returns>
     [Route("/book")]
     [HttpPost]
     public ActionResult<string> CreateBook(BookDto bookInput)
@@ -50,7 +64,10 @@ public class BooksController : Controller
         var isValidType = bookInput.Type != null && Enum.IsDefined(typeof(BookTypes), bookInput.Type);
         return Ok(booksService.CreateBook(bookInput.Title, bookInput.Author, isValidType ? (BookTypes)bookInput.Type! : null, bookInput.PublicationYear).Result);
     }
-
+/// <summary>
+///     Update an existing book
+/// </summary>
+/// <returns></returns>
     [Route("/book/{id}")]
     [HttpPut]
     public ActionResult<string> UpdateBook(string id, BookDto bookInput)
@@ -65,12 +82,21 @@ public class BooksController : Controller
         return Ok(booksService.UpdateBook(id, updatedBook).Result);
     }
 
+    /// <summary>
+    /// Delete all the books
+    /// </summary>
+    /// <returns></returns>
     [HttpDelete("all")] //Will listen to /books/all
     public ActionResult<int> DeleteAll()
     {
         return Ok(booksService.DeleteAll().Result);
     }
 
+    /// <summary>
+    /// Delete a book
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [Route("/book/{id}")]
     [HttpDelete] //Will listen to /books/{id}
     public ActionResult<bool> DeleteById(string id)
@@ -78,6 +104,12 @@ public class BooksController : Controller
         return Ok(booksService.DeleteById(id).Result);
     }
 
+    /// <summary>
+    /// Update a specific property of a book
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="bookUpdates"></param>
+    /// <returns></returns>
     [Route("/book/{id}")]
     [HttpPatch]
     public ActionResult PatchBook(string id, JsonPatchDocument<BookDto> bookUpdates)

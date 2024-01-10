@@ -20,11 +20,3 @@ public class BookDto
         PublicationYear = year;
     }
 }
-
-public class BookDtpValidator : AbstractValidator<BookDto>
-{
-    public BookDtpValidator()
-    {
-        
-    }
-}

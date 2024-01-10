@@ -1,3 +1,4 @@
+using System.Reflection;
 using FirstApi.DTO;
 using FirstApi.Services;
 using FirstApi.ValidationAttributes;
@@ -13,7 +14,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
+});
 builder.Services.AddControllers().AddNewtonsoftJson(option=>
 {
     option.SerializerSettings.MissingMemberHandling = MissingMemberHandling.Error;
@@ -24,7 +30,6 @@ builder.Services.AddControllers(config =>
 {
     config.Filters.Add<ApiValidateModelAttribute>();
 });
-builder.Services.AddValidatorsFromAssemblyContaining<BookDtpValidator>();
 
 builder.Services.Configure<ApiBehaviorOptions>(opt =>
 {
