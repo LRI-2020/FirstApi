@@ -27,9 +27,9 @@ public class BooksController : Controller
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public ActionResult<IEnumerable<Book>> GetAll()
+    public async Task<ActionResult<IEnumerable<Book>>> GetAll()
     {
-        var books = booksService.GetBooks().Result;
+        var books = await booksService.GetBooksAsync();
         var enumerable = books as Book[] ?? books.ToArray();
         if (!enumerable.Any())
             return NotFound();
@@ -43,9 +43,9 @@ public class BooksController : Controller
     /// <returns></returns>
     [Route("/book/{id}")]
     [HttpGet]
-    public ActionResult<IEnumerable<Book>> GetById(string id)
+    public async Task<ActionResult<IEnumerable<Book>>> GetBookByIdAsync(string id)
     {
-        var book = booksService.GetBookById(id).Result;
+        var book = await booksService.GetBookByIdAsync(id);
         if (book == null)
             return NotFound(new ProblemDetails() { Title = $"Book with Id {id} not found" });
         return Ok(book);
@@ -58,11 +58,11 @@ public class BooksController : Controller
     /// <returns></returns>
     [Route("/book")]
     [HttpPost]
-    public ActionResult<string> CreateBook(BookDto bookInput)
+    public async Task<ActionResult<string>> CreateBookAsync(BookDto bookInput)
     {
-        if (bookInput.Type == null) return Ok(booksService.CreateBook(bookInput.Title, bookInput.Author, null, bookInput.PublicationYear).Result);
+        if (bookInput.Type == null) return Ok(await booksService.CreateBookAsync(bookInput.Title, bookInput.Author, null, bookInput.PublicationYear));
         var isValidType = bookInput.Type != null && Enum.IsDefined(typeof(BookTypes), bookInput.Type);
-        return Ok(booksService.CreateBook(bookInput.Title, bookInput.Author, isValidType ? (BookTypes)bookInput.Type! : null, bookInput.PublicationYear).Result);
+        return Ok(await booksService.CreateBookAsync(bookInput.Title, bookInput.Author, isValidType ? (BookTypes)bookInput.Type! : null, bookInput.PublicationYear));
     }
 /// <summary>
 ///     Update an existing book
@@ -70,16 +70,16 @@ public class BooksController : Controller
 /// <returns></returns>
     [Route("/book/{id}")]
     [HttpPut]
-    public ActionResult<string> UpdateBook(string id, BookDto bookInput)
+    public async Task<ActionResult<string>> UpdateBookAsync(string id, BookDto bookInput)
     {
-        var originalBook = booksService.GetBookById(id).Result;
+        var originalBook = await booksService.GetBookByIdAsync(id);
         if (originalBook == null)
             return NotFound();
         //If nullable prop not passed, kept existing value
         var newType = bookInput.Type == null || !Enum.IsDefined(typeof(BookTypes), bookInput.Type) ? originalBook.Type : (BookTypes)bookInput.Type;
         var newDate = bookInput.PublicationYear ?? originalBook.PublicationYear;
         var updatedBook = new Book(bookInput.Title, bookInput.Author, newType, newDate, id);
-        return Ok(booksService.UpdateBook(id, updatedBook).Result);
+        return Ok(await booksService.UpdateBookAsync(id, updatedBook));
     }
 
     /// <summary>
@@ -87,9 +87,9 @@ public class BooksController : Controller
     /// </summary>
     /// <returns></returns>
     [HttpDelete("all")] //Will listen to /books/all
-    public ActionResult<int> DeleteAll()
+    public async Task<ActionResult<int>> DeleteAllAsync()
     {
-        return Ok(booksService.DeleteAll().Result);
+        return Ok(await booksService.DeleteAllAsync());
     }
 
     /// <summary>
@@ -99,9 +99,9 @@ public class BooksController : Controller
     /// <returns></returns>
     [Route("/book/{id}")]
     [HttpDelete] //Will listen to /books/{id}
-    public ActionResult<bool> DeleteById(string id)
+    public async Task<ActionResult<bool>> DeleteByIdAsync(string id)
     {
-        return Ok(booksService.DeleteById(id).Result);
+        return Ok(await booksService.DeleteByIdAsync(id));
     }
 
     /// <summary>
@@ -112,9 +112,9 @@ public class BooksController : Controller
     /// <returns></returns>
     [Route("/book/{id}")]
     [HttpPatch]
-    public ActionResult PatchBook(string id, JsonPatchDocument<BookDto> bookUpdates)
+    public async Task<ActionResult> PatchBookAsync(string id, JsonPatchDocument<BookDto> bookUpdates)
     {
-        var book = booksService.GetBookById(id).Result;
+        var book = await booksService.GetBookByIdAsync(id);
         if (book == null)
             return NotFound();
 
@@ -130,6 +130,6 @@ public class BooksController : Controller
         book.Author = updatedBookDto.Author;
         book.Type = isValidEnum ? (BookTypes)updatedBookDto.Type! : BookTypes.Unknown; //properties could be removed through patch as they are nullable in the dto
         book.PublicationYear = updatedBookDto.PublicationYear??1970; //properties could be removed through patch as they are nullable in the dto
-        return Ok(booksService.UpdateBook(id, book).Result);
+        return Ok(await booksService.UpdateBookAsync(id, book));
     }
 }
