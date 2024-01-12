@@ -14,12 +14,10 @@ namespace FirstApi.Controllers;
 public class BooksController : Controller
 {
     private readonly BooksService booksService;
-    private readonly IValidator<BookDto> validator;
 
-    public BooksController(BooksService booksService,   IValidator<BookDto> validator)
+    public BooksController(BooksService booksService)
     {
         this.booksService = booksService;
-        this.validator = validator;
     }
 
     /// <summary>

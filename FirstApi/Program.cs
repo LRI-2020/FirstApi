@@ -1,9 +1,6 @@
 using System.Reflection;
-using FirstApi.DTO;
 using FirstApi.Services;
 using FirstApi.ValidationAttributes;
-using FluentValidation;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 

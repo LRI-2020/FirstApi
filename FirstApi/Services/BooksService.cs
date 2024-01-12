@@ -18,11 +18,13 @@ public class BooksService
 
     public async Task<IEnumerable<Book>> GetBooksAsync()
     {
+        var books = new List<Book>();
+
         using HttpResponseMessage res = await httpClient.GetAsync(ApiUrl+".json");
         var jsonResponse = await res.Content.ReadAsStringAsync();
+        if (jsonResponse == "null") return books;
         JObject rawBooks = JObject.Parse(jsonResponse);
 
-        var books = new List<Book>();
         foreach (var x in rawBooks)
         {
             string name = x.Key;
