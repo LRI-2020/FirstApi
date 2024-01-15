@@ -1,10 +1,12 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=2d7f9135_002D14be_002D4a26_002D9020_002Db98fe75111d7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="WhenErrorInService_Returns500" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=2d7f9135_002D14be_002D4a26_002D9020_002Db98fe75111d7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="WhenErrorInService_Returns500" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::4BFD986B-C438-4790-996F-D8F2403C1AC6::net6.0::FirstApi.test.Controllers.Tests.BooksController.Tests.GetAllBooksTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::4BFD986B-C438-4790-996F-D8F2403C1AC6::net6.0::FirstApi.test.Controllers.Tests.BooksController.Tests.GetBookByIdTests.WhenExistingId_BookIsReturned&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::4BFD986B-C438-4790-996F-D8F2403C1AC6::net6.0::FirstApi.test.Controllers.Tests.BooksController.Tests.GetBookByIdTests.WhenNonExistingId_NotFoundReturned&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::4BFD986B-C438-4790-996F-D8F2403C1AC6::net6.0::FirstApi.test.Controllers.Tests.BooksController.Tests.GetBookByIdTests.WhenNoIdPassed_BadRequest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::4BFD986B-C438-4790-996F-D8F2403C1AC6::net6.0::FirstApi.test.Controllers.Tests.BooksController.Tests.CreateBookTests.WhenModelValid_BookCreated&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::4BFD986B-C438-4790-996F-D8F2403C1AC6::net6.0::FirstApi.test.Controllers.Tests.BooksController.Tests.CreateBookTests.WhenCreateBook_ReturnsId&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=449fc1f3_002D2d9d_002D4e26_002D8d63_002D401dab612f0e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="WhenGetAll_ReturnsIEnumerableOfBooks" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
@@ -13,6 +15,13 @@
     &lt;TestId&gt;xUnit::4BFD986B-C438-4790-996F-D8F2403C1AC6::net6.0::FirstApi.test.Controllers.Tests.BooksController.Tests.GetAllBooksTests.WhenGetAll_ReturnsIEnumerableOfBooks&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::4BFD986B-C438-4790-996F-D8F2403C1AC6::net6.0::FirstApi.test.Controllers.Tests.BooksController.Tests.GetAllBooksTests.WhenResNull_ReturnsNotFound&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::4BFD986B-C438-4790-996F-D8F2403C1AC6::net6.0::FirstApi.test.Controllers.Tests.BooksController.Tests.GetAllBooksTests.WhenErrorInService_Returns500&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=84e2fe16_002D448b_002D4c42_002Dbd8e_002D9b282e570852/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="WhenCreateBook_ReturnsId" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::4BFD986B-C438-4790-996F-D8F2403C1AC6::net6.0::FirstApi.test.Controllers.Tests.BooksController.Tests.CreateBookTests.WhenCreateBook_ReturnsId&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::4BFD986B-C438-4790-996F-D8F2403C1AC6::net6.0::FirstApi.test.Controllers.Tests.BooksController.Tests.CreateBookTests.WhenBookTypeInvalid_SendNullToService&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::4BFD986B-C438-4790-996F-D8F2403C1AC6::net6.0::FirstApi.test.Controllers.Tests.BooksController.Tests.CreateBookTests.WhenBookTypeValid_TypeSentToService&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ad7188c1_002D1cdb_002D457a_002D8807_002D37a25dbbc039/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="WhenErrorInService_Returns500 #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
