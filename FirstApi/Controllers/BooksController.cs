@@ -13,9 +13,9 @@ namespace FirstApi.Controllers;
 [ApiController]
 public class BooksController : Controller
 {
-    private readonly BooksService booksService;
+    private readonly IBooksService booksService;
 
-    public BooksController(BooksService booksService)
+    public BooksController(IBooksService booksService)
     {
         this.booksService = booksService;
     }
@@ -28,10 +28,10 @@ public class BooksController : Controller
     public async Task<ActionResult<IEnumerable<Book>>> GetAll()
     {
         var books = await booksService.GetBooksAsync();
-        var enumerable = books as Book[] ?? books.ToArray();
-        if (!enumerable.Any())
+        var res = books as Book[] ?? books.ToArray();
+        if (!res.Any())
             return NotFound();
-        return Ok(enumerable);
+        return Ok(res);
     }
 
     /// <summary>

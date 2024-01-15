@@ -22,7 +22,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(option=>
     option.SerializerSettings.MissingMemberHandling = MissingMemberHandling.Error;
 });
 builder.Services.AddScoped<HttpClient>();        
-builder.Services.AddScoped<BooksService>();
+builder.Services.AddScoped<IBooksService,BooksService>();
 builder.Services.AddControllers(config =>
 {
     config.Filters.Add<ApiValidateModelAttribute>();

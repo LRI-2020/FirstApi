@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace FirstApi.Services;
 
-public class BooksService
+public class BooksService : IBooksService
 {
     private readonly HttpClient httpClient;
 
