@@ -5,11 +5,17 @@ namespace FirstApi.Controllers;
 
 public class ErrorsController : Controller
 {
+    private readonly IHttpContextAccessor httpContextAccessor;
+
+    public ErrorsController(    IHttpContextAccessor httpContextAccessor)
+    {
+        this.httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+    }
     [Route("/error")]
     [ApiExplorerSettings(IgnoreApi = true)]
     public IActionResult Error()
     {
-        var context = HttpContext.Features.Get<IExceptionHandlerFeature>();
+        var context = httpContextAccessor.HttpContext?.Features.Get<IExceptionHandlerFeature>();
         var exception = context?.Error;
         var problemDetails = SpecificProblem(exception);
         return StatusCode(problemDetails.Status ?? StatusCodes.Status500InternalServerError, problemDetails);

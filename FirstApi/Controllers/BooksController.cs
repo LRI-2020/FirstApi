@@ -25,7 +25,7 @@ public class BooksController : Controller
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Book>>> GetAll()
+    public async Task<ActionResult<IEnumerable<Book>>> GetAllBooks()
     {
         var books = await booksService.GetBooksAsync();
         var res = books as Book[] ?? books.ToArray();
@@ -41,7 +41,7 @@ public class BooksController : Controller
     /// <returns></returns>
     [Route("/book/{id}")]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Book>>> GetBookByIdAsync(string id)
+    public async Task<ActionResult<Book>> GetBookByIdAsync(string id)
     {
         var book = await booksService.GetBookByIdAsync(id);
         if (book == null)

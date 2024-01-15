@@ -26,4 +26,13 @@
       <ProjectReference Include="..\FirstApi\FirstApi.csproj" />
     </ItemGroup>
 
+
+
+
+    <ItemGroup>
+      <Reference Include="JetBrains.ReSharper.TestRunner.Abstractions">
+        <HintPath>..\..\..\..\..\..\Program Files\JetBrains\JetBrains Rider 2022.1.1\lib\ReSharperHost\TestRunner\netcoreapp3.0\JetBrains.ReSharper.TestRunner.Abstractions.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>
