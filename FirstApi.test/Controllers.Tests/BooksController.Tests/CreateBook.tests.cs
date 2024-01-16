@@ -3,7 +3,6 @@ using FirstApi.DTO;
 using FirstApi.Models;
 using FirstApi.Services;
 using FluentAssertions;
-using JetBrains.ReSharper.TestRunner.Abstractions.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
@@ -12,7 +11,7 @@ namespace FirstApi.test.Controllers.Tests.BooksController.Tests;
 public class CreateBookTests
 {
     [Fact]
-    public async Task WhenCreateBook_ReturnsId()
+    public async Task WhenCreateBook_IdReturned()
     {
         var fixture = new Fixture();
         var newBook = fixture.Create<BookDto>();
@@ -22,14 +21,14 @@ public class CreateBookTests
                 It.IsAny<string>(),
                 It.IsAny<BookTypes?>(),
                 It.IsAny<int?>()))
-            .ReturnsAsync("ok");
+            .ReturnsAsync("abc");
         var sut = new FirstApi.Controllers.BooksController(bookServiceMock.Object);
         var res = await sut.CreateBookAsync(newBook);
 
         res.Result.Should().BeOfType(typeof(OkObjectResult));
         var result = (res.Result as OkObjectResult);
         result.Should().NotBe(null);
-        result.Value.Equals("ok").Should().BeTrue();
+        result.Value.Equals("abc").Should().BeTrue();
     }
     
     [Fact]
@@ -37,12 +36,6 @@ public class CreateBookTests
     {
         var newBook = new BookDto("test", "test", 1, 2000);
         var bookServiceMock = new Mock<IBooksService>();
-        bookServiceMock.Setup(bs => bs.CreateBookAsync(
-                It.IsAny<string>(),
-                It.IsAny<string>(),
-                It.IsAny<BookTypes?>(),
-                It.IsAny<int?>()))
-            .ReturnsAsync("ok");
         var sut = new FirstApi.Controllers.BooksController(bookServiceMock.Object);
         await sut.CreateBookAsync(newBook);
         
@@ -59,14 +52,8 @@ public class CreateBookTests
     {
         var newBook = new BookDto("test", "test", bookType, 2000);
         var bookServiceMock = new Mock<IBooksService>();
-        bookServiceMock.Setup(bs => bs.CreateBookAsync(
-                It.IsAny<string>(),
-                It.IsAny<string>(),
-                It.IsAny<BookTypes?>(),
-                It.IsAny<int?>()))
-            .ReturnsAsync("ok");
         var sut = new FirstApi.Controllers.BooksController(bookServiceMock.Object);
-        var res = await sut.CreateBookAsync(newBook);
+        await sut.CreateBookAsync(newBook);
 
         bookServiceMock.Verify(_ => _.CreateBookAsync(
             It.Is<string>(s => s == newBook.Title),

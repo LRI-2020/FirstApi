@@ -73,7 +73,7 @@ public class BooksController : Controller
         var originalBook = await booksService.GetBookByIdAsync(id);
         if (originalBook == null)
             return NotFound();
-        //If nullable prop not passed, kept existing value
+        //If nullable property is not passed, kept existing value to avoid a user loosing data without explicitly asked for it
         var newType = bookInput.Type == null || !Enum.IsDefined(typeof(BookTypes), bookInput.Type) ? originalBook.Type : (BookTypes)bookInput.Type;
         var newDate = bookInput.PublicationYear ?? originalBook.PublicationYear;
         var updatedBook = new Book(bookInput.Title, bookInput.Author, newType, newDate, id);

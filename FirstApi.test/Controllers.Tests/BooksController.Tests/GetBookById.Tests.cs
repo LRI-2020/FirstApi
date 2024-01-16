@@ -35,8 +35,6 @@ public class GetBookByIdTests
     public async Task WhenNonExistingId_NotFoundReturned()
     {
         var bookServiceMock = new Mock<IBooksService>();
-        var fixture = new Fixture();
-        var books = fixture.CreateMany<Book>(5).ToArray();
         bookServiceMock.Setup(bs => bs.GetBookByIdAsync(It.IsAny<string>())).ReturnsAsync((Book?) null);
         var sut = new FirstApi.Controllers.BooksController(bookServiceMock.Object);
        
