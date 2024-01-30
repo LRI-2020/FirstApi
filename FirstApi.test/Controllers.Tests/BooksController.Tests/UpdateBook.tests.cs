@@ -1,4 +1,5 @@
-﻿using AutoFixture;
+﻿using System.Net.Mail;
+using AutoFixture;
 using AutoFixture.Xunit2;
 using Castle.Components.DictionaryAdapter;
 using FirstApi.DTO;
@@ -8,11 +9,20 @@ using FluentAssertions;
 using JetBrains.ReSharper.TestRunner.Abstractions.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Newtonsoft.Json;
+using Xunit.Abstractions;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace FirstApi.test.Controllers.Tests.BooksController.Tests;
 
 public class UpdateBookTests
 {
+    private readonly ITestOutputHelper testOutputHelper;
+
+    public UpdateBookTests(ITestOutputHelper testOutputHelper)
+    {
+        this.testOutputHelper = testOutputHelper;
+    }
 
     [Theory]
     [AutoMoqData]
@@ -119,6 +129,31 @@ public class UpdateBookTests
          paramPassed[0].Type.Should().Be((originalBook).Type);
          paramPassed[0].PublicationYear.Should().Be((originalBook).PublicationYear);
 
+    }
+    
+    [Fact]
+    public void BasicStrings()
+    {
+        // arrange
+        var fixture = new Fixture();
+        // fixture.Customize(new CurrentDateTimeCustomization());
+        fixture.Customizations.Add(new CurrentDateTimeGenerator());
+        var currentDateTime = fixture.Create<DateTime>();
+        var book = fixture.Build<Book>()
+            .Without(b => b.PropNotInitializedThroughCtor)
+            .With(b => b.Author, "J.K.Rowling")
+            .Without(b => b.Ratings)
+            .Do(b => b.Ratings.Add(5))
+            .Create();
+
+
+        // var string1 = fixture.Create<string>();
+        // var string2 = fixture.Create<string>();
+        //
+        // testOutputHelper.WriteLine(string1);
+        // testOutputHelper.WriteLine(string2);
+         testOutputHelper.WriteLine(currentDateTime.ToString());
+        // testOutputHelper.WriteLine(JsonSerializer.Serialize(book));
     }
 
 }

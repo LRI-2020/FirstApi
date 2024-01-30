@@ -11,11 +11,13 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=92884192_002D44e1_002D48f8_002D8205_002D192ad3fa2f31/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="WhenInputValid_NewValueSentToService" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::4BFD986B-C438-4790-996F-D8F2403C1AC6::net6.0::FirstApi.test.Controllers.Tests.BooksController.Tests.UpdateBookTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::4BFD986B-C438-4790-996F-D8F2403C1AC6::net6.0::FirstApi.test.Controllers.Tests.BooksController.Tests.GetAllBooksTests.WhenErrorInService_Returns500&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=bc5cbfcb_002Db98f_002D4f83_002D8b37_002Dbbc58b041389/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="WhenTypeIdNull_PreviousValueKept" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::4BFD986B-C438-4790-996F-D8F2403C1AC6::net6.0::FirstApi.test.Controllers.Tests.BooksController.Tests.UpdateBookTests.WhenNullValues_PreviousValueKept&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::4BFD986B-C438-4790-996F-D8F2403C1AC6::net6.0::FirstApi.test.Controllers.Tests.BooksController.Tests.UpdateBookTests.BasicStrings&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	

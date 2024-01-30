@@ -3,11 +3,12 @@ using FirstApi.Controllers;
 using FirstApi.Services;
 using FirstApi.ValidationAttributes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var connectionString = builder.Configuration["ConnectionStrings:FirstApi"];
 
 builder.Services.AddControllers();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -35,6 +36,8 @@ builder.Services.Configure<ApiBehaviorOptions>(opt =>
 {
     opt.SuppressModelStateInvalidFilter = true;
 });
+builder.Services.AddDbContext<ApplicationDbContext>(options=> options.UseSqlServer(connectionString));
+
 
 var app = builder.Build();
 

@@ -1,10 +1,16 @@
 ﻿using FirstApi.DTO;
 
 namespace FirstApi.Models;
+using System.ComponentModel.DataAnnotations;
 
 public class Book
 {
-    public Book(string title, string author, BookTypes? type, int? publicationYear, string id)
+
+    public Book()
+    {
+        
+    }
+    public Book(string title, string author, BookTypes? type, int? publicationYear, int id)
     {
         Title = title;
         Author = author;
@@ -12,35 +18,14 @@ public class Book
         PublicationYear = publicationYear??1970;
         Id = id;
     }
+    
+    [Key]
+    public int Id { get; set; }
 
+    public List<int> Ratings { get; set; } = new ();
     public string Title { get; set; }
     public string Author { get; set; }
     public int PublicationYear { get; set; }
     public BookTypes Type { get; set; }
-    public string Id { get; set; }
-}
-
-public static class BookConverter
-{
-    public static bool IsBook(FireBaseBook fireBaseBook)
-    {
-        return Enum.IsDefined(typeof(BookTypes), fireBaseBook.Type);
-    }
-
-}
-
-public class FireBaseBook
-{
-    public FireBaseBook(string title, string author, int publicationYear, string type)
-    {
-        Title = title;
-        Author = author;
-        PublicationYear = publicationYear;
-        Type = type;
-    }
-
-    public string Title { get; set; }
-    public string Author { get; set; }
-    public int PublicationYear { get; set; }
-    public string Type { get; set; }
+    
 }

@@ -41,7 +41,7 @@ public class BooksController : Controller
     /// <returns></returns>
     [Route("/book/{id}")]
     [HttpGet]
-    public async Task<ActionResult<Book>> GetBookByIdAsync(string id)
+    public async Task<ActionResult<Book>> GetBookByIdAsync(int id)
     {
         var book = await booksService.GetBookByIdAsync(id);
         if (book == null)
@@ -68,7 +68,7 @@ public class BooksController : Controller
 /// <returns></returns>
     [Route("/book/{id}")]
     [HttpPut]
-    public async Task<ActionResult<string>> UpdateBookAsync(string id, BookDto bookInput)
+    public async Task<ActionResult<string>> UpdateBookAsync(int id, BookDto bookInput)
     {
         var originalBook = await booksService.GetBookByIdAsync(id);
         if (originalBook == null)
@@ -97,7 +97,7 @@ public class BooksController : Controller
     /// <returns></returns>
     [Route("/book/{id}")]
     [HttpDelete] //Will listen to /books/{id}
-    public async Task<ActionResult<bool>> DeleteByIdAsync(string id)
+    public async Task<ActionResult<bool>> DeleteByIdAsync(int id)
     {
         return Ok(await booksService.DeleteByIdAsync(id));
     }
@@ -110,7 +110,7 @@ public class BooksController : Controller
     /// <returns></returns>
     [Route("/book/{id}")]
     [HttpPatch]
-    public async Task<ActionResult> PatchBookAsync(string id, JsonPatchDocument<BookDto> bookUpdates)
+    public async Task<ActionResult> PatchBookAsync(int id, JsonPatchDocument<BookDto> bookUpdates)
     {
         var book = await booksService.GetBookByIdAsync(id);
         if (book == null)

@@ -19,7 +19,7 @@ public class GetAllBooksTests
         var fixture = new Fixture();
         var books = fixture.CreateMany<Book>(3).ToArray();
         var bookServiceMock = new Mock<IBooksService>();
-        bookServiceMock.Setup(bs => bs.GetBooksAsync()).ReturnsAsync(books);
+        bookServiceMock.Setup(bs => bs.GetBooksAsync()).ReturnsAsync(books); 
         var sut = new FirstApi.Controllers.BooksController(bookServiceMock.Object);
         
         var res = await sut.GetAllBooks();
@@ -50,6 +50,22 @@ public class GetAllBooksTests
         bookServiceMock.Setup(bs => bs.GetBooksAsync()).Throws(exception);
         var sut = new FirstApi.Controllers.BooksController(bookServiceMock.Object);
         await Assert.ThrowsAsync<Exception>(() => sut.GetAllBooks());
+
+        var mock = new Mock<ILicense>();
+        mock.Setup(x => x.LicenseKey).Returns(GetLicenseKey);
+        Assert.Equal("a new key",mock.Object.LicenseKey);
+        
+        
+    }
+
+    private string GetLicenseKey()
+    {
+        return "a new key";
+    }
+
+    public interface ILicense
+    {
+        public string LicenseKey { get; set; }
         
     }
     
