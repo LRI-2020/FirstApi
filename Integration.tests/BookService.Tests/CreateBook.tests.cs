@@ -4,7 +4,6 @@ using EFCore.BulkExtensions;
 using FirstApi.Models;
 using FirstApi.Services;
 using FluentAssertions;
-using Xunit.Abstractions;
 
 namespace Integration.tests.BookService.Tests;
 

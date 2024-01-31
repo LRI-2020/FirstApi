@@ -17,6 +17,8 @@
     &lt;TestId&gt;xUnit::B614FFB8-B9C1-4E4A-9F02-0EBC62C659C1::net6.0::Integration.tests.BookService.Tests.CreateBookTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::B614FFB8-B9C1-4E4A-9F02-0EBC62C659C1::net6.0::Integration.tests.BookService.Tests.GetBooksTests.WhenGetBooks_BooksReturned&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::B614FFB8-B9C1-4E4A-9F02-0EBC62C659C1::net6.0::Integration.tests.BookService.Tests.GetBooksTests.WhenNoBooks_EmptyCollectionReturned&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::B614FFB8-B9C1-4E4A-9F02-0EBC62C659C1::net6.0::Integration.tests.BookService.Tests.GetBooksTests.WhenGetById_MatchingBookReturnedIfExists&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::B614FFB8-B9C1-4E4A-9F02-0EBC62C659C1::net6.0::Integration.tests.BookService.Tests.GetBooksTests.WhenGetById_NullReturnedIfBookNotExists&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=bc5cbfcb_002Db98f_002D4f83_002D8b37_002Dbbc58b041389/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="WhenTypeIdNull_PreviousValueKept" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
