@@ -1,64 +1,51 @@
 ﻿using System.Reflection;
 using AutoFixture.Xunit2;
-using FirstApi.DTO;
+using EFCore.BulkExtensions;
 using FirstApi.Models;
 using FirstApi.Services;
 using FluentAssertions;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Xunit.Abstractions;
 
 namespace Integration.tests.BookService.Tests;
 
-public class CreateBook_tests : IDisposable, IAsyncDisposable
+public class CreateBookTests : IDisposable
 {
-    private readonly ITestOutputHelper output;
     private readonly ApplicationDbContext testDbContext;
     private readonly BooksService sut;
 
-    public CreateBook_tests(ITestOutputHelper output)
+    public CreateBookTests()
     {
-        this.output = output;
-
-        var configuration =  new ConfigurationBuilder().AddUserSecrets(Assembly.GetExecutingAssembly(),true).Build();
-        
-        var conStrBuilder = new SqlConnectionStringBuilder(
-            configuration["ConnectionStrings:FirstApiIntegrationTests"])
-        {
-            Password = configuration["DbPassword"]
-        };
-        
-        var connectionString = conStrBuilder.ConnectionString;
-        testDbContext = new ApplicationDbContext(new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseSqlServer(connectionString)
-            .Options);
+        testDbContext = TestHelper.GetConfiguredTestDbContext();
         sut = new BooksService(testDbContext);
+        TestHelper.CleanDb(testDbContext);
 
     }
-    
+
+
     [Theory]
     [AutoData]
     public async Task WhenCreateBook_BookSavedInDb(string title, string author, BookTypes type, int publicationYear)
     {
        var r =  await sut.CreateBookAsync(title, author, type, publicationYear);
-        
         //Assert
         var newBook = testDbContext.Books.FindAsync(r);
         newBook.Should().NotBeNull();
+    }    
+    
+    [Theory]
+    [AutoData]
+    public async Task WhenCreateBookWithNullableProp_BookSavedWithDefaultValue(string title, string author)
+    {
+       var r =  await sut.CreateBookAsync(title, author, null, null);
+        //Assert
+        var newBook = await testDbContext.Books.FindAsync(r);
+        newBook.Should().NotBeNull();
+        newBook!.Type.Should().Be(BookTypes.Unknown);
+        newBook.PublicationYear.Should().Be(1970);
     }
-
 
     public void Dispose()
     {
-        //cleaning here for dbCOntext and db
-        output.WriteLine("dispose is called");
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        //cleaning here for dbCOntext and db
-        output.WriteLine("disposeAsync is called");
-
+        testDbContext.Dispose();
     }
 }
