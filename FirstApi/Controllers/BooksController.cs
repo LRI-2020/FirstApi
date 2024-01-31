@@ -76,8 +76,12 @@ public class BooksController : Controller
         //If nullable property is not passed, kept existing value to avoid a user loosing data without explicitly asked for it
         var newType = bookInput.Type == null || !Enum.IsDefined(typeof(BookTypes), bookInput.Type) ? originalBook.Type : (BookTypes)bookInput.Type;
         var newDate = bookInput.PublicationYear ?? originalBook.PublicationYear;
-        var updatedBook = new Book(bookInput.Title, bookInput.Author, newType, newDate, id);
-        return Ok(await booksService.UpdateBookAsync(id, updatedBook));
+        originalBook.Author = bookInput.Author;
+        originalBook.Title = bookInput.Title;
+        originalBook.Ratings = bookInput.Ratings;
+        originalBook.PublicationYear = newDate;
+        originalBook.Type = newType;
+        return Ok(await booksService.UpdateBookAsync(id, originalBook));
     }
 
     /// <summary>

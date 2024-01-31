@@ -2,4 +2,8 @@
 /FirstApi/obj/
 /FirstApi.test/bin/
 /FirstApi.test/obj/
+/FirstApi.IntesgrationTests/bin/
+/FirstApi.IntesgrationTests/obj/
+/Integration.tests/bin/
+/Integration.tests/obj/
 

@@ -10,13 +10,13 @@ public class Book
     {
         
     }
-    public Book(string title, string author, BookTypes? type, int? publicationYear, int id)
+   
+    public Book(string title, string author, BookTypes? type, int? publicationYear)
     {
         Title = title;
         Author = author;
         Type = type?? BookTypes.Unknown;
         PublicationYear = publicationYear??1970;
-        Id = id;
     }
     
     [Key]

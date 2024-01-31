@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstApi", "FirstApi\FirstA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstApi.test", "FirstApi.test\FirstApi.test.csproj", "{4BFD986B-C438-4790-996F-D8F2403C1AC6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstApi.IntesgrationTests", "FirstApi.IntesgrationTests\FirstApi.IntesgrationTests.csproj", "{462C64F7-4E6F-437E-909F-550DDD050066}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration.tests", "Integration.tests\Integration.tests.csproj", "{B614FFB8-B9C1-4E4A-9F02-0EBC62C659C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{4BFD986B-C438-4790-996F-D8F2403C1AC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BFD986B-C438-4790-996F-D8F2403C1AC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BFD986B-C438-4790-996F-D8F2403C1AC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{462C64F7-4E6F-437E-909F-550DDD050066}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{462C64F7-4E6F-437E-909F-550DDD050066}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{462C64F7-4E6F-437E-909F-550DDD050066}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{462C64F7-4E6F-437E-909F-550DDD050066}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B614FFB8-B9C1-4E4A-9F02-0EBC62C659C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B614FFB8-B9C1-4E4A-9F02-0EBC62C659C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B614FFB8-B9C1-4E4A-9F02-0EBC62C659C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B614FFB8-B9C1-4E4A-9F02-0EBC62C659C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

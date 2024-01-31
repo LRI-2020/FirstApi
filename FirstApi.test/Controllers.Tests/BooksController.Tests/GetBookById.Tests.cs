@@ -16,7 +16,7 @@ public class GetBookByIdTests
         var bookServiceMock = new Mock<IBooksService>();
         var fixture = new Fixture();
         var books = fixture.CreateMany<Book>(5).ToArray();
-        var ids = new List<string>();
+        var ids = new List<int>();
         books.ForEach(b => ids.Add(b.Id));
         var rand = new Random();
         var id = ids[rand.Next(5)];
@@ -35,10 +35,10 @@ public class GetBookByIdTests
     public async Task WhenNonExistingId_NotFoundReturned()
     {
         var bookServiceMock = new Mock<IBooksService>();
-        bookServiceMock.Setup(bs => bs.GetBookByIdAsync(It.IsAny<string>())).ReturnsAsync((Book?) null);
+        bookServiceMock.Setup(bs => bs.GetBookByIdAsync(It.IsAny<int>())).ReturnsAsync((Book?) null);
         var sut = new FirstApi.Controllers.BooksController(bookServiceMock.Object);
        
-        var res = await sut.GetBookByIdAsync("abc");
+        var res = await sut.GetBookByIdAsync(1);
         
         res.Result.Should().BeOfType(typeof(NotFoundObjectResult));
     }

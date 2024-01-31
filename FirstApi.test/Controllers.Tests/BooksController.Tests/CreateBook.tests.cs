@@ -21,14 +21,14 @@ public class CreateBookTests
                 It.IsAny<string>(),
                 It.IsAny<BookTypes?>(),
                 It.IsAny<int?>()))
-            .ReturnsAsync("abc");
+            .ReturnsAsync(1);
         var sut = new FirstApi.Controllers.BooksController(bookServiceMock.Object);
         var res = await sut.CreateBookAsync(newBook);
 
         res.Result.Should().BeOfType(typeof(OkObjectResult));
         var result = (res.Result as OkObjectResult);
         result.Should().NotBe(null);
-        result.Value.Equals("abc").Should().BeTrue();
+        result.Value.Equals(1).Should().BeTrue();
     }
     
     [Fact]

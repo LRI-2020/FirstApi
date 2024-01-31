@@ -16,6 +16,7 @@
         <PackageReference Include="AutoFixture" Version="5.0.0-preview0007" />
         <PackageReference Include="AutoFixture.AutoMoq" Version="5.0.0-preview0007" />
         <PackageReference Include="AutoFixture.Xunit2" Version="5.0.0-preview0007" />
+        <PackageReference Include="EFCore.BulkExtensions.SqlServer" Version="6.8.1" />
         <PackageReference Include="FluentAssertions" Version="7.0.0-alpha.3" />
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
         <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="8.0.0" />

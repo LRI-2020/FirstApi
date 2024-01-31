@@ -6,10 +6,14 @@
         <Nullable>enable</Nullable>
 
         <IsPackable>false</IsPackable>
-      <UserSecretsId>6287ebe3-83d6-43c9-9212-7cbfa152138b</UserSecretsId>
+      <UserSecretsId>78d60ab6-b0d6-4acd-9d6e-ba608210190e</UserSecretsId>
   </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AutoFixture" Version="5.0.0-preview0007" />
+        <PackageReference Include="AutoFixture.AutoMoq" Version="5.0.0-preview0007" />
+        <PackageReference Include="AutoFixture.Xunit" Version="5.0.0-preview0007" />
+        <PackageReference Include="AutoFixture.Xunit2" Version="5.0.0-preview0007" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
         <PackageReference Include="xunit" Version="2.4.1" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
@@ -22,22 +26,12 @@
         </PackageReference>
     </ItemGroup>
 
-
     <ItemGroup>
       <ProjectReference Include="..\FirstApi\FirstApi.csproj" />
     </ItemGroup>
 
-
-
-
     <ItemGroup>
-      <Reference Include="JetBrains.ReSharper.TestRunner.Abstractions">
-        <HintPath>..\..\..\..\..\..\Program Files\JetBrains\JetBrains Rider 2022.1.1\lib\ReSharperHost\TestRunner\netcoreapp3.0\JetBrains.ReSharper.TestRunner.Abstractions.dll</HintPath>
-      </Reference>
+      <ProjectReference Include="..\FirstApi\FirstApi.csproj" />
     </ItemGroup>
-
-
-
-
 
 </Project>

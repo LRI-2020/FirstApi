@@ -13,12 +13,12 @@ public static class SharedSetup
         var book = fixture.Create<Book>();
         bookServiceMock.Setup(bs =>
                 bs.GetBookByIdAsync(
-                    It.IsAny<string>()))
+                    It.IsAny<int>()))
             .ReturnsAsync(book);        
         
         bookServiceMock.Setup(bs =>
                 bs.UpdateBookAsync(
-                    It.IsAny<string>(), It.IsAny<Book>()))
+                    It.IsAny<int>(), It.IsAny<Book>()))
             .ReturnsAsync(book);
 
         return bookServiceMock;

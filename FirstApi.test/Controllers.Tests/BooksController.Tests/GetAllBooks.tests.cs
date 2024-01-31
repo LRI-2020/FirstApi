@@ -1,11 +1,7 @@
 ﻿using AutoFixture;
-using FirstApi.Controllers;
 using FirstApi.Models;
 using FirstApi.Services;
 using FluentAssertions;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 

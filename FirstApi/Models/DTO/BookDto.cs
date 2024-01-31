@@ -9,6 +9,7 @@ public class BookDto
 {
     [Required] [MinLength(2)] public string Title { get; set; }
     [Required] [MinLength(2)] public string Author { get; set; }
+    public List<int> Ratings { get; set; } = new();
     public int? Type { get; set; }
     [MinValue(1700)] public int? PublicationYear { get; set; }
 

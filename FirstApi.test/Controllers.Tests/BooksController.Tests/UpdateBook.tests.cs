@@ -1,17 +1,12 @@
-﻿using System.Net.Mail;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoFixture.Xunit2;
-using Castle.Components.DictionaryAdapter;
 using FirstApi.DTO;
 using FirstApi.Models;
 using FirstApi.Services;
 using FluentAssertions;
-using JetBrains.ReSharper.TestRunner.Abstractions.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Newtonsoft.Json;
 using Xunit.Abstractions;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace FirstApi.test.Controllers.Tests.BooksController.Tests;
 
@@ -34,7 +29,7 @@ public class UpdateBookTests
 
         SharedSetup.BasicBookServiceMockSetup(bookServiceMock);
 
-        var res  = await sut.UpdateBookAsync("id", bookDto);
+        var res  = await sut.UpdateBookAsync(1, bookDto);
         
         res.Result.Should().BeOfType(typeof(OkObjectResult));
         var ok = res.Result as OkObjectResult;
@@ -64,14 +59,14 @@ public class UpdateBookTests
       
       bookServiceMock.Setup(bs =>
               bs.GetBookByIdAsync(
-                  It.Is<string>(s => s == originalBook.Id)))
+                  It.Is<int>(s => s == originalBook.Id)))
           .ReturnsAsync(originalBook);
       Book? bookSentToService = null;
       
       bookServiceMock.Setup(bs =>
               bs.UpdateBookAsync(
-                  It.IsAny<string>(), It.IsAny<Book>()))
-          .Callback<string, Book>((s, b) => bookSentToService = b)
+                  It.IsAny<int>(), It.IsAny<Book>()))
+          .Callback<int, Book>((s, b) => bookSentToService = b)
           .ReturnsAsync(updatedBook);
          await sut.UpdateBookAsync(updatedBook.Id, updatedBookDto);
       
@@ -90,9 +85,9 @@ public class UpdateBookTests
     {
         bookServiceMock.Setup(bs =>
                 bs.GetBookByIdAsync(
-                    It.IsAny<string>()))
+                    It.IsAny<int>()))
             .ReturnsAsync((Book?)null);
-        var res = await sut.UpdateBookAsync("id", bookDto);
+        var res = await sut.UpdateBookAsync(1, bookDto);
 
         res.Result.Should().BeOfType(typeof(NotFoundResult));
     }
@@ -113,47 +108,22 @@ public class UpdateBookTests
         
         bookServiceMock.Setup(bs =>
                 bs.GetBookByIdAsync(
-                    It.IsAny<string>()))
+                    It.IsAny<int>()))
             .ReturnsAsync(originalBook);     
         
         var paramPassed = new List<Book>();
         
         bookServiceMock.Setup(bs =>
-            bs.UpdateBookAsync(It.IsAny<string>(),Capture.In(paramPassed)))
+            bs.UpdateBookAsync(It.IsAny<int>(),Capture.In(paramPassed)))
             .ReturnsAsync(originalBook);
 
         //Act
-         await sut.UpdateBookAsync("id", bookDto);
+         await sut.UpdateBookAsync(1, bookDto);
         
          //Assert
          paramPassed[0].Type.Should().Be((originalBook).Type);
          paramPassed[0].PublicationYear.Should().Be((originalBook).PublicationYear);
 
-    }
-    
-    [Fact]
-    public void BasicStrings()
-    {
-        // arrange
-        var fixture = new Fixture();
-        // fixture.Customize(new CurrentDateTimeCustomization());
-        fixture.Customizations.Add(new CurrentDateTimeGenerator());
-        var currentDateTime = fixture.Create<DateTime>();
-        var book = fixture.Build<Book>()
-            .Without(b => b.PropNotInitializedThroughCtor)
-            .With(b => b.Author, "J.K.Rowling")
-            .Without(b => b.Ratings)
-            .Do(b => b.Ratings.Add(5))
-            .Create();
-
-
-        // var string1 = fixture.Create<string>();
-        // var string2 = fixture.Create<string>();
-        //
-        // testOutputHelper.WriteLine(string1);
-        // testOutputHelper.WriteLine(string2);
-         testOutputHelper.WriteLine(currentDateTime.ToString());
-        // testOutputHelper.WriteLine(JsonSerializer.Serialize(book));
     }
 
 }

@@ -1,5 +1,7 @@
-﻿using System.Text;
+﻿using System.ComponentModel.Design;
+using System.Text;
 using System.Text.Json;
+using EFCore.BulkExtensions;
 using FirstApi.Models;
 using Newtonsoft.Json.Linq;
 
@@ -7,19 +9,17 @@ namespace FirstApi.Services;
 
 public class BooksService : IBooksService
 {
-    private readonly HttpClient httpClient;
     private readonly ApplicationDbContext applicationDbContext;
 
-    public BooksService(HttpClient httpClient, ApplicationDbContext applicationDbContext)
+    public BooksService(ApplicationDbContext applicationDbContext)
     {
-        this.httpClient = httpClient;
         this.applicationDbContext = applicationDbContext;
     }
 
     public async Task<IEnumerable<Book>> GetBooksAsync()
     {
-        var books = new List<Book>();
-         return books;
+        var books = applicationDbContext.Books.ToList();
+        return books;
     }
 
     public async Task<Book?> GetBookByIdAsync(int id)
@@ -33,65 +33,48 @@ public class BooksService : IBooksService
         catch (Exception e)
         {
             Console.WriteLine(e);
-                return null;
+            return null;
         }
-
     }
 
-    public async Task<string> CreateBookAsync(string title, string author, BookTypes? type, int? publicationYear)
+    public async Task<int> CreateBookAsync(string title, string author, BookTypes? type, int? publicationYear)
     {
-        var t = new Task<string>(() => "ok");
-        t.Start();
-        return await t;
+        var newBook = new Book(title, author, type, publicationYear);
+        applicationDbContext.Books.Add(newBook);
+        await applicationDbContext.SaveChangesAsync();
+        return newBook.Id;
     }
 
     public async Task<Book> UpdateBookAsync(int id, Book book)
     {
-        
-        var t = new Task<Book>(() => new Book("test","test",BookTypes.Biography,2000,1));
-        t.Start();
-        return await t;        
-        //if (id != book.Id)
-    //         throw new Exception("Id does not match with the book Id");
-    //     
-    //     var fireBaseBook = new FireBaseBook(book.Title, book.Author, book.PublicationYear, book.Type.ToString());
-    //     var body = JsonSerializer.Serialize(fireBaseBook);
-    //     var requestContent = new StringContent(body, Encoding.UTF8, "application/json");
-    //     using HttpResponseMessage res = await httpClient.PutAsync(ApiUrl + "/" + book.Id+".json", requestContent);
-    //     if (!res.IsSuccessStatusCode) throw new Exception("book could not be updated"); 
-    //
-    //     var result = JObject.Parse(await res.Content.ReadAsStringAsync());
-    //     var updatedFirebaseBook = result.ToObject<FireBaseBook>();
-    //     
-    //     if(updatedFirebaseBook==null || !BookConverter.IsBook(updatedFirebaseBook))
-    //         throw new Exception("book could not be updated");
-    //     return new Book(updatedFirebaseBook.Title, updatedFirebaseBook.Author, (BookTypes)Enum.Parse(typeof(BookTypes),updatedFirebaseBook.Type, true), updatedFirebaseBook.PublicationYear, id);
+        if (id != book.Id)
+            throw new Exception("Id does not match with the book Id");
+
+        applicationDbContext.Books.Update(book);
+        await applicationDbContext.SaveChangesAsync();
+        return book;
     }
 
-    
+
     public async Task<int> DeleteAllAsync()
     {
-        var t = new Task<int>(() => 1);
-        t.Start();
-        return await t;
-        // var booksCount = (await GetBooksAsync()).Count();
-        // using var res = await httpClient.DeleteAsync(ApiUrl + ".json");
-        // if (res.IsSuccessStatusCode)
-        //     return booksCount;
-        //
-        // throw new Exception("Error occurred when deleting the books - " + res.StatusCode);
+        var countBefore = applicationDbContext.Books.Count();
+        await applicationDbContext.BulkDeleteAsync(applicationDbContext.Books);
+        var countAfter = applicationDbContext.Books.Count();
+        if (countAfter != 0)
+            throw new Exception($"An error occurred - {countAfter} books could not be deleted");
+        return countBefore;
+
     }
 
     public async Task<bool> DeleteByIdAsync(int id)
     {
-        var t = new Task<bool>(() => true);
-        t.Start();
-        return await t;
-        // if (await GetBookByIdAsync(id) == null)
-        //     throw new KeyNotFoundException($"Book with Id {id} does not exist");
-        //
-        // using HttpResponseMessage res = await httpClient.DeleteAsync(ApiUrl + $"/{id}.json");
-        // return res.IsSuccessStatusCode;
+        var book = await applicationDbContext.Books.FindAsync(id);
+        if (book == null)
+            throw new KeyNotFoundException($"Book with Id {id} does not exist");
+
+        applicationDbContext.Books.Remove(book);
+        var r = await applicationDbContext.SaveChangesAsync();
+        return await applicationDbContext.Books.FindAsync(id) == null;
     }
-    
 }
