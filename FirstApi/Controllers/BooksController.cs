@@ -58,9 +58,9 @@ public class BooksController : Controller
     [HttpPost]
     public async Task<ActionResult<string>> CreateBookAsync(BookDto bookInput)
     {
-        if (bookInput.Type == null) return Ok(await booksService.CreateBookAsync(bookInput.Title, bookInput.Author, null, bookInput.PublicationYear));
+        if (bookInput.Type == null) return Ok(await booksService.CreateBookAsync(bookInput.Title, bookInput.Author, null, bookInput.PublicationYear, bookInput.Ratings));
         var isValidType = bookInput.Type != null && Enum.IsDefined(typeof(BookTypes), bookInput.Type);
-        return Ok(await booksService.CreateBookAsync(bookInput.Title, bookInput.Author, isValidType ? (BookTypes)bookInput.Type! : null, bookInput.PublicationYear));
+        return Ok(await booksService.CreateBookAsync(bookInput.Title, bookInput.Author, isValidType ? (BookTypes)bookInput.Type! : null, bookInput.PublicationYear, bookInput.Ratings));
     }
 /// <summary>
 ///     Update an existing book

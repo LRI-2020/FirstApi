@@ -37,9 +37,9 @@ public class BooksService : IBooksService
         }
     }
 
-    public async Task<int> CreateBookAsync(string title, string author, BookTypes? type, int? publicationYear)
+    public async Task<int> CreateBookAsync(string title, string author, BookTypes? type, int? publicationYear, List<int>?ratings)
     {
-        var newBook = new Book(title, author, type, publicationYear);
+        var newBook = new Book(title, author, type, publicationYear, ratings);
         applicationDbContext.Books.Add(newBook);
         await applicationDbContext.SaveChangesAsync();
         return newBook.Id;
