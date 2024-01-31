@@ -1,6 +1,4 @@
 ﻿using AutoFixture;
-using EFCore.BulkExtensions;
-using FirstApi.Models;
 using FirstApi.Services;
 using FluentAssertions;
 
@@ -25,7 +23,7 @@ public class GetBooksTests
     {
         //Arrange
         
-        var books = await CreateBooksInDbAsync(3);
+        var books = await TestHelper.CreateBooksInDbAsync(3, fixture,testDbContext);
         
         //Act
         var res = await sut.GetBooksAsync();
@@ -38,14 +36,7 @@ public class GetBooksTests
 
     }
 
-    private async Task<IEnumerable<Book>> CreateBooksInDbAsync(int count)
-    {
-        var booksData = fixture.CreateMany<Book>(count).ToList();
-        await testDbContext.BulkInsertAsync(booksData);
-        var res = testDbContext.Books;
-        Assert.Equal(count, res.Count());
-        return res;
-    }
+
 
     [Fact]
     public async Task WhenNoBooks_EmptyCollectionReturned()
@@ -64,7 +55,7 @@ public class GetBooksTests
     public async Task WhenGetById_MatchingBookReturnedIfExists()
     {
         //Arrange
-        var books = (await CreateBooksInDbAsync(3)).ToList();
+        var books = (await TestHelper.CreateBooksInDbAsync(3, fixture,testDbContext)).ToList();
         var id = books.Select(b => b.Id).FirstOrDefault();
         
         //Act
@@ -81,7 +72,7 @@ public class GetBooksTests
     public async Task WhenGetById_NullReturnedIfBookNotExists()
     {
         //Arrange
-        await CreateBooksInDbAsync(3);
+        await TestHelper.CreateBooksInDbAsync(3, fixture,testDbContext);
         var lastExistingId = testDbContext.Books.Select(b => b.Id).Max();
         var nonExistingId = new Random().Next(lastExistingId,Int32.MaxValue);
         

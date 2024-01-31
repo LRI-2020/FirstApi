@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
+using AutoFixture;
 using EFCore.BulkExtensions;
+using FirstApi.Models;
 using FirstApi.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +12,7 @@ namespace Integration.tests;
 
 public static class TestHelper
 {
-    public static readonly string connectionString = GetConnectionString();
+    private static readonly string ConnectionString = GetConnectionString();
 
    
     static string GetConnectionString()
@@ -28,7 +30,7 @@ public static class TestHelper
     public static ApplicationDbContext GetConfiguredTestDbContext()
     {
         return new ApplicationDbContext(new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseSqlServer(connectionString)
+            .UseSqlServer(ConnectionString)
             .Options);
     }
    public static void CleanDb(ApplicationDbContext testDbContext)
@@ -42,5 +44,14 @@ public static class TestHelper
    {
        var serialized = JsonConvert.SerializeObject(self);
        return JsonConvert.DeserializeObject<T>(serialized) ?? throw new Exception("could not create deep copy of object");
+   }
+
+   public static async Task<IEnumerable<Book>> CreateBooksInDbAsync(int count, Fixture fixture, ApplicationDbContext testDbContext)
+   {
+       var booksData = fixture.CreateMany<Book>(count).ToList();
+       await testDbContext.BulkInsertAsync(booksData);
+       var res = testDbContext.Books;
+       Assert.Equal(count, res.Count());
+       return res;
    }
 }
