@@ -1,5 +1,4 @@
 ﻿using AutoFixture;
-using AutoFixture.Xunit2;
 using FirstApi.Services;
 using FluentAssertions;
 
@@ -38,25 +37,53 @@ public class DeleteBookTests
 
     }   
     
-    [Theory]
-    [AutoData]
-    public void WhenDeleteNonExistingId_()
+ [Fact]
+    public async Task WhenDeleteNonExistingId_()
     {
+        //Arrange
+        await TestHelper.CreateBooksInDbAsync(3, fixture, testDbContext);
+        var ids = testDbContext.Books.Select(b => b.Id).ToList();
+        var idToDelete = new Random().Next(ids.Max(),Int32.MaxValue);
+        (await testDbContext.Books.FindAsync(idToDelete)).Should().BeNull();
         
+        //Act
+
+        Func<Task> act = () => sut.DeleteByIdAsync(idToDelete);
+        await act.Should().ThrowAsync<Exception>();
+        
+        var books = testDbContext.Books;
+        books.Count().Should().Be(ids.Count);
     }   
     
-    [Theory]
-    [AutoData]
-    public void WhenDeleteAll_AllBooksDeleted()
+    [Fact]
+    public async Task WhenDeleteAll_AllBooksDeleted()
     {
+        //Arrange
+        var count = new Random().Next(2, 12);
+        await TestHelper.CreateBooksInDbAsync(count, fixture, testDbContext);
         
+        //Act
+        var r = await sut.DeleteAllAsync();
+        
+        //Assert
+
+        r.Should().Be(count);
+        var books = testDbContext.Books.ToList();
+        books.Should().BeEmpty();
     }    
     
-    [Theory]
-    [AutoData]
-    public void WhenDeleteAllInEmptyDB_ZeroReturned()
+    [Fact]
+    public async Task WhenDeleteAllInEmptyDB_ZeroReturned()
     {
+        //Arrange
+        testDbContext.Books.Count().Should().Be(0);
         
+        //Act
+        var r = await sut.DeleteAllAsync();
+        
+        //Assert
+        r.Should().Be(0);
+
     }
 
 }

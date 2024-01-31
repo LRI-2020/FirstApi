@@ -1,9 +1,5 @@
-﻿using System.ComponentModel.Design;
-using System.Text;
-using System.Text.Json;
-using EFCore.BulkExtensions;
+﻿using EFCore.BulkExtensions;
 using FirstApi.Models;
-using Newtonsoft.Json.Linq;
 
 namespace FirstApi.Services;
 
