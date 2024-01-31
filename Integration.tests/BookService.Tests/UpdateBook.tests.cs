@@ -31,29 +31,31 @@ public class UpdateBookTests
         originalBook.Type = BookTypes.Biography;
         testDbContext.Books.Add(originalBook);
         await testDbContext.SaveChangesAsync();
-        
-        var newRatings = fixture.CreateMany<int>(4).ToList();
-        var newType = BookTypes.Comic;
-        var updatedBook = originalBook;
-        updatedBook.Type = newType;
-        updatedBook.PublicationYear = newPubYear;
-        updatedBook.Title = newTitle;
-        updatedBook.Author = newAuthor;
-        updatedBook.Ratings = newRatings;
+
+        var updatedBook = SetBookNewValues(originalBook,newTitle,newAuthor,newPubYear);
         
         //Act
-
-        var r =await sut.UpdateBookAsync(originalBook.Id, updatedBook);
+       await sut.UpdateBookAsync(originalBook.Id, updatedBook);
+       var r = await testDbContext.Books.FindAsync(originalBook.Id); 
+       
         //Assert
-        r.Id.Should().Be(originalBook.Id);
-        r.Type.Should().Be(newType);
-        r.PublicationYear.Should().Be(newPubYear);
-        r.Title.Should().Be(newTitle);
-        r.Author.Should().Be(newAuthor);
-        r.Ratings.Should().BeEquivalentTo(newRatings);
+        r.Should().BeEquivalentTo(updatedBook);
+    }
 
-    }    
-    
+    private Book SetBookNewValues(Book originalBook, string newTitle, string newAuthor, int newPubYear)
+    {
+        var newRatings = fixture.CreateMany<int>(4).ToList();
+        var newType = BookTypes.Comic;
+
+        originalBook.Title = newTitle;
+        originalBook.Author = newAuthor;
+        originalBook.PublicationYear = newPubYear;
+        originalBook.Ratings = newRatings;
+        originalBook.Type = newType;
+
+        return originalBook;
+    }
+
     [Fact]
     public async Task WhenUpdate_BookIdNotUpdated()
     {

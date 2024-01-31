@@ -18,7 +18,6 @@ public class GetBooksTests
         testDbContext = TestHelper.GetConfiguredTestDbContext();
         sut = new BooksService(testDbContext);
         TestHelper.CleanDb(testDbContext);
-
     }
 
     [Fact]
