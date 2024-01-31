@@ -8,6 +8,7 @@ namespace Integration.tests.BookService.Tests;
 
 
 
+[Collection("Sequential")]
 public class UpdateBookTests
 {
     private readonly ApplicationDbContext testDbContext;

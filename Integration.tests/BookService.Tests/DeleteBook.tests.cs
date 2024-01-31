@@ -4,6 +4,8 @@ using FluentAssertions;
 
 namespace Integration.tests.BookService.Tests;
 
+[Collection("Sequential")]
+
 public class DeleteBookTests
 {
     private readonly ApplicationDbContext testDbContext;

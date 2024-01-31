@@ -20,7 +20,8 @@ public class CreateBookTests
                 It.IsAny<string>(),
                 It.IsAny<string>(),
                 It.IsAny<BookTypes?>(),
-                It.IsAny<int?>()))
+                It.IsAny<int?>(),
+                It.IsAny<List<int>?>()))
             .ReturnsAsync(1);
         var sut = new FirstApi.Controllers.BooksController(bookServiceMock.Object);
         var res = await sut.CreateBookAsync(newBook);
@@ -42,7 +43,9 @@ public class CreateBookTests
         bookServiceMock.Verify(_ => _.CreateBookAsync(
             It.Is<string>(s => s == newBook.Title),
             It.Is<string>(s => s == newBook.Author),
-            It.Is<BookTypes>(i=> i==(BookTypes)newBook.Type!), It.Is<int>(i => i == newBook.PublicationYear)));
+            It.Is<BookTypes>(i=> i==(BookTypes)newBook.Type!),
+            It.Is<int>(i => i == newBook.PublicationYear),
+            It.IsAny<List<int>?>()));
     }
 
     [Theory]
@@ -58,6 +61,6 @@ public class CreateBookTests
         bookServiceMock.Verify(_ => _.CreateBookAsync(
             It.Is<string>(s => s == newBook.Title),
             It.Is<string>(s => s == newBook.Author),
-            null, It.Is<int>(i => i == newBook.PublicationYear)));
+            null, It.Is<int>(i => i == newBook.PublicationYear), It.IsAny<List<int>?>()));
     }
 }

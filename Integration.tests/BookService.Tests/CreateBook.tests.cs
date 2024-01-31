@@ -6,6 +6,7 @@ using FluentAssertions;
 
 namespace Integration.tests.BookService.Tests;
 
+[Collection("Sequential")]
 public class CreateBookTests : IDisposable
 {
     private readonly ApplicationDbContext testDbContext;
